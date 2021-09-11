@@ -4,7 +4,7 @@ function injectJs(srcFile) {
     document.getElementsByTagName('head')[0].appendChild(scr);
 }
 
-var dsturl1 = "https://etk.srail.co.kr/hpg/hra/01/selectScheduleList.do?pageId=TK0101010000";
+var dsturl1 = "https://etk.srail.kr/hpg/hra/01/selectScheduleList.do?pageId=TK0101010000";
 
 if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 
@@ -19,9 +19,9 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 		console.log("first:" + firstSelected);
 
 		if (sessionStorage.getItem('macro') == "true") {
-			$("div.button").append('<a href="#" onclick="macrostop();" style="margin-left:5px;"><img src="' + chrome.extension.getURL('images/btn_stop.png') + '"></a>');
+			$("#search-list").append('<a href="#" onclick="macrostop();" style="margin-left:5px;"><img src="' + chrome.extension.getURL('images/btn_stop.png') + '"></a>');
 		} else {
-			$("div.button").append('<a href="#" onclick="macro();" style="margin-left:5px;"><img src="' + chrome.extension.getURL('images/btn_start.png') + '"></a>');
+			$("#search-list").append('<a href="#" onclick="macro();" style="margin-left:5px;"><img src="' + chrome.extension.getURL('images/btn_start.png') + '"></a>');
 		}
 
 		$("<style>")
