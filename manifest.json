@@ -4,7 +4,7 @@
   "description": "SRT 자동 예약 매크로",
   "version": "1.0.1",
   "permissions": [
-    "https://etk.srail.co.kr/"
+    "https://etk.srail.kr/"
   ],
   "icons": {
       "128": "images/icon128.png"
