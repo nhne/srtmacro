@@ -12,7 +12,7 @@
   "content_scripts": [ {
     "all_frames": true,
     "js": ["jquery-1.11.0.min.js", "content.js"],
-    "matches": ["https://etk.srail.co.kr/*"],
+    "matches": ["https://etk.srail.kr/*"],
     "run_at": "document_end"
   }],
   "background": {
