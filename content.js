@@ -96,6 +96,10 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 								name = $(firstSpecials[j]).attr('class');
 								if (name == 'btn_small btn_burgundy_dark val_m wx90') {
 									$(firstSpecials[0])[0].click();
+									var buttons = document.getElementsByClassName("ui-button");
+									if (buttons.length > 0) {
+										buttons[buttons.length - 1].click()
+									}
 									succeed = true;
 									break;
 								}
