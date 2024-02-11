@@ -19,9 +19,9 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 		console.log("first:" + firstSelected);
 
 		if (sessionStorage.getItem('macro') == "true") {
-			$("#search-list").append('<a href="#" onclick="macrostop();" style="margin-left:5px;"><img src="' + chrome.extension.getURL('images/btn_stop.png') + '"></a>');
+			$("div.sub_wrap").append('<a href="#" onclick="macrostop();" style="margin-left:5px;"><img src="' + chrome.extension.getURL('images/btn_stop.png') + '"></a>');
 		} else {
-			$("#search-list").append('<a href="#" onclick="macro();" style="margin-left:5px;"><img src="' + chrome.extension.getURL('images/btn_start.png') + '"></a>');
+			$("div.sub_wrap").append('<a href="#" onclick="macro();" style="margin-left:5px;"><img src="' + chrome.extension.getURL('images/btn_start.png') + '"></a>');
 		}
 
 		$("<style>")
@@ -127,7 +127,7 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 					}, 1000);
 				}
 			} else {
-				history.go(-1);
+				$('input[type="submit"][value="조회하기"]').click();
 			}
 		}
 	});
