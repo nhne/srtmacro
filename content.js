@@ -79,7 +79,9 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 						if (coachSpecials.length != 0) {
 							for (j = 0; j < coachSpecials.length; j++) {
 								name = $(coachSpecials[j]).attr('class');
-								if (name == 'btn_small btn_burgundy_dark val_m wx90') {
+								var available = name == 'btn_small btn_burgundy_dark val_m wx90'
+									&& !$(coachSpecials[j]).text().includes('입석')
+								if (available) {
 									$(coachSpecials[0])[0].click();
 									succeed = true;
 									break;
@@ -94,7 +96,9 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 						if (firstSpecials.length != 0) {
 							for (j = 0; j < firstSpecials.length; j++) {
 								name = $(firstSpecials[j]).attr('class');
-								if (name == 'btn_small btn_burgundy_dark val_m wx90') {
+								var available = name == 'btn_small btn_burgundy_dark val_m wx90'
+								&& !$(firstSpecials[j]).text().includes('입석')
+								if (available) {
 									$(firstSpecials[0])[0].click();
 									var button = document.getElementsByClassName('swal2-confirm');
 									if (button.length > 0) {
