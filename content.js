@@ -132,6 +132,10 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 				}
 			} else {
 				$('input[type="submit"][value="조회하기"]').click();
+				var confirmBtn = $('button.swal2-confirm');
+				if (confirmBtn.length > 0) {
+					confirmBtn[0].click();
+				}
 			}
 		}
 	});
