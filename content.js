@@ -9,7 +9,7 @@ var dsturl1 = "https://etk.srail.kr/hpg/hra/01/selectScheduleList.do?pageId=TK01
 if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 
 	$(document).ready(function() {
-		injectJs(chrome.extension.getURL('inject.js'));
+		injectJs(chrome.runtime.getURL('inject.js'));
 
 		var coachSelected = JSON.parse(sessionStorage.getItem('coachSelected'));
 		var firstSelected = JSON.parse(sessionStorage.getItem('firstSelected'));
@@ -19,9 +19,9 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 		console.log("first:" + firstSelected);
 
 		if (sessionStorage.getItem('macro') == "true") {
-			$("div.sub_wrap").append('<a href="#" onclick="macrostop();" style="margin-left:5px;"><img src="' + chrome.extension.getURL('images/btn_stop.png') + '"></a>');
+			$("div.sub_wrap").append('<a href="#" onclick="macrostop();" style="margin-left:5px;"><img src="' + chrome.runtime.getURL('images/btn_stop.png') + '"></a>');
 		} else {
-			$("div.sub_wrap").append('<a href="#" onclick="macro();" style="margin-left:5px;"><img src="' + chrome.extension.getURL('images/btn_start.png') + '"></a>');
+			$("div.sub_wrap").append('<a href="#" onclick="macro();" style="margin-left:5px;"><img src="' + chrome.runtime.getURL('images/btn_start.png') + '"></a>');
 		}
 
 		$("<style>")
@@ -124,7 +124,7 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 					sessionStorage.removeItem('psgInfoPerPrnb3');
 					sessionStorage.removeItem('locSeatAttCd1');
 					sessionStorage.removeItem('rqSeatAttCd1');
-					chrome.extension.sendMessage({type: 'playSound'}, function(data) { });
+					chrome.runtime.sendMessage({type: 'playSound'}, function(data) { });
 				} else {
 					setTimeout(function() { 
 					location.reload();
