@@ -1,22 +1,25 @@
 function injectJs(srcFile) {
-    var scr = document.createElement('script');
-    scr.src = srcFile;
-    document.getElementsByTagName('head')[0].appendChild(scr);
+	var scr = document.createElement('script');
+	scr.src = srcFile;
+	document.getElementsByTagName('head')[0].appendChild(scr);
 }
 
 var dsturl1 = "https://etk.srail.kr/hpg/hra/01/selectScheduleList.do?pageId=TK0101010000";
 
 if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 
-	$(document).ready(function() {
+	$(document).ready(function () {
 		injectJs(chrome.runtime.getURL('inject.js'));
 
 		var coachSelected = JSON.parse(sessionStorage.getItem('coachSelected'));
 		var firstSelected = JSON.parse(sessionStorage.getItem('firstSelected'));
+		var reserveSelected = JSON.parse(sessionStorage.getItem('reserveSelected'));
 		if (coachSelected == null) coachSelected = [];
 		if (firstSelected == null) firstSelected = [];
+		if (reserveSelected == null) reserveSelected = [];
 		console.log("coach:" + coachSelected);
 		console.log("first:" + firstSelected);
+		console.log("reserve:" + reserveSelected);
 
 		if (sessionStorage.getItem('macro') == "true") {
 			$("div.sub_wrap").append('<a href="#" onclick="macrostop();" style="margin-left:5px;"><img src="' + chrome.runtime.getURL('images/btn_stop.png') + '"></a>');
@@ -25,12 +28,12 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 		}
 
 		$("<style>")
-    .prop("type", "text/css")
-    .html("\
+			.prop("type", "text/css")
+			.html("\
     .search-form form .button input, .search-form form .button a img{\
     	vertical-align: middle;\
     }")
-    .appendTo("body");
+			.appendTo("body");
 
 		// Inserts the macro button into the table.
 		if ($("#search-list").length != 0) {
@@ -39,17 +42,24 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 				var columns = $(rows[i]).children('td');
 				var first = $(columns[5]);
 				var coach = $(columns[6]);
+				var reserve = $(columns[7]);
 				if (coach.children().length > 0) {
 					coach.append($("<p class='p5'></p>"));
 					var checkbox = $("<label></label>").html('<input type="checkbox" name="checkbox" class="coachMacro" value="' + i + '"> 매크로');
-					checkbox.children('input').prop('checked', coachSelected.indexOf(i+"") > -1);
+					checkbox.children('input').prop('checked', coachSelected.indexOf(i + "") > -1);
 					coach.append(checkbox);
 				}
 				if (first.children().length > 0) {
 					first.append($("<p class='p5'></p>"));
 					var checkbox = $("<label></label>").html('<input type="checkbox" name="checkbox" class="firstMacro" value="' + i + '"> 매크로');
-					checkbox.children('input').prop('checked', firstSelected.indexOf(i+"") > -1);
+					checkbox.children('input').prop('checked', firstSelected.indexOf(i + "") > -1);
 					first.append(checkbox);
+				}
+				if (reserve.children().length > 0) {
+					reserve.append($("<p class='p5'></p>"));
+					var checkbox = $("<label></label>").html('<input type="checkbox" name="checkbox" class="reserveMacro" value="' + i + '"> 매크로');
+					checkbox.children('input').prop('checked', reserveSelected.indexOf(i + "") > -1);
+					reserve.append(checkbox);
 				}
 			}
 		}
@@ -73,8 +83,9 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 
 					var first = $(columns[5]);
 					var coach = $(columns[6]);
+					var reserve = $(columns[7]);
 
-					if (coachSelected.indexOf(i+"") > -1) {
+					if (coachSelected.indexOf(i + "") > -1) {
 						var coachSpecials = coach.children("a");
 						if (coachSpecials.length != 0) {
 							for (j = 0; j < coachSpecials.length; j++) {
@@ -91,7 +102,7 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 						}
 					}
 
-					if (firstSelected.indexOf(i+"") > -1) {
+					if (firstSelected.indexOf(i + "") > -1) {
 						var firstSpecials = first.children("a");
 						if (firstSpecials.length != 0) {
 							for (j = 0; j < firstSpecials.length; j++) {
@@ -111,12 +122,33 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 							if (succeed == true) break;
 						}
 					}
+
+					if (reserveSelected.indexOf(i + "") > -1) {
+						var reserveSpecials = reserve.children("a");
+						if (reserveSpecials.length != 0) {
+							for (j = 0; j < reserveSpecials.length; j++) {
+								name = $(reserveSpecials[j]).attr('class');
+								var available = name == 'btn_small btn_burgundy_dark val_m wx90'
+								if (available) {
+									$(reserveSpecials[0])[0].click();
+									var button = document.getElementsByClassName('swal2-confirm');
+									if (button.length > 0) {
+										button[0].click();
+									}
+									succeed = true;
+									break;
+								}
+							}
+							if (succeed == true) break;
+						}
+					}
 				}
 
 				if (succeed == true) {
 					sessionStorage.removeItem('macro');
 					sessionStorage.removeItem('coachSelected');
 					sessionStorage.removeItem('firstSelected');
+					sessionStorage.removeItem('reserveSelected');
 					sessionStorage.removeItem('psgInfoPerPrnb1');
 					sessionStorage.removeItem('psgInfoPerPrnb5');
 					sessionStorage.removeItem('psgInfoPerPrnb4');
@@ -124,10 +156,10 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 					sessionStorage.removeItem('psgInfoPerPrnb3');
 					sessionStorage.removeItem('locSeatAttCd1');
 					sessionStorage.removeItem('rqSeatAttCd1');
-					chrome.runtime.sendMessage({type: 'playSound'}, function(data) { });
+					chrome.runtime.sendMessage({ type: 'playSound' }, function (data) { });
 				} else {
-					setTimeout(function() { 
-					location.reload();
+					setTimeout(function () {
+						location.reload();
 					}, 1000);
 				}
 			} else {
