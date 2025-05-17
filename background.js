@@ -30,9 +30,10 @@ function sendTelegramMessage() {
 }
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    if (message && message.type == 'playSound') {
-        playSound();
+	if (message && message.type == 'playSound') {
+		chrome.windows.update(-2, {drawAttention: true});
+		playSound();
 		sendTelegramMessage();
-        sendResponse(true);
-    }
+		sendResponse(true);
+	}
 });

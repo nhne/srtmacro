@@ -3,6 +3,9 @@
   "name": "SRT Macro",
   "description": "SRT 자동 예약 매크로",
   "version": "1.0.2",
+  "permissions": [
+    "tabs"
+  ],
   "host_permissions": [
     "https://etk.srail.kr/"
   ],
