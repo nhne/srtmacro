@@ -12,27 +12,33 @@ function playSound() {
 }
 
 function sendTelegramMessage() {
-	var botToken = localStorage['botToken'];
-	var chatId = localStorage['chatId'];
-	var msg = encodeURI('Macro has been stopped. Please check your reservation status.');
-	if (botToken != undefined && chatId != undefined) {
-		var url = 'https://api.telegram.org/bot' + botToken + '/sendmessage?chat_id=' + chatId + '&text=' + msg;
-		
-		var xmlhttp = new XMLHttpRequest();
-		xmlhttp.onreadystatechange=function() {
-			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-				var response = xmlhttp.responseText; //if you need to do something with the returned value
-			}
-		}
-		xmlhttp.open('GET', url, true);
-		xmlhttp.send();
-	}
+    chrome.storage.local.get(['botToken', 'chatId', 'webhook_url'], function(items) {
+        var botToken = items.botToken;
+        var chatId = items.chatId;
+        var webhookUrl = items.webhook_url;
+        var msg = 'Macro has been stopped. Please check your reservation status.';
+        if (botToken && chatId) {
+            var url = 'https://api.telegram.org/bot' + botToken + '/sendmessage?chat_id=' + chatId + '&text=' + encodeURIComponent(msg);
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    // Optionally handle Telegram response
+                });
+        }
+        if (webhookUrl) {
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ content: 'ticket purchased' })
+            });
+        }
+    });
 }
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 	if (message && message.type == 'playSound') {
 		chrome.windows.update(-2, {drawAttention: true});
-		playSound();
+		// playSound();
 		sendTelegramMessage();
 		sendResponse(true);
 	}

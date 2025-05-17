@@ -4,10 +4,14 @@
   "description": "SRT 자동 예약 매크로",
   "version": "1.0.2",
   "permissions": [
-    "tabs"
+    "tabs",
+    "storage"
   ],
   "host_permissions": [
-    "https://etk.srail.kr/"
+    "https://etk.srail.kr/",
+    "https://api.telegram.org/*",
+    "https://discord.com/api/webhooks/*",
+    "https://discordapp.com/api/webhooks/*"
   ],
   "icons": {
       "128": "images/icon128.png"
