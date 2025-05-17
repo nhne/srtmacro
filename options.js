@@ -1,6 +1,3 @@
-var defaultBotToken = 'Set your telegram bot token';
-var defaultChatId = 'Set your telegram chat id';
-
 function save_options() {
   var botToken = document.getElementById('bot_token').value;
   var chatId = document.getElementById('chat_id').value;
@@ -34,12 +31,6 @@ function restore_options() {
     var botToken = items.botToken;
     var chatId = items.chatId;
     var webhookUrl = items.webhook_url;
-
-    if (botToken == undefined)
-      botToken = defaultBotToken;
-
-    if (chatId == undefined)
-      chatId = defaultChatId;
 
     document.getElementById('bot_token').value = botToken;
     document.getElementById('chat_id').value = chatId;
