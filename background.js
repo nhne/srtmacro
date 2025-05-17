@@ -12,11 +12,13 @@ function playSound() {
 }
 
 function sendTelegramMessage() {
-    chrome.storage.local.get(['botToken', 'chatId', 'webhook_url'], function(items) {
+    chrome.storage.local.get(['botToken', 'chatId', 'webhook_url', 'webhook_message'], function(items) {
         var botToken = items.botToken;
         var chatId = items.chatId;
         var webhookUrl = items.webhook_url;
+        var webhookMessage = items.webhook_message || 'ticket purchased'; // Default if not set
         var msg = 'Macro has been stopped. Please check your reservation status.';
+        
         if (botToken && chatId) {
             var url = 'https://api.telegram.org/bot' + botToken + '/sendmessage?chat_id=' + chatId + '&text=' + encodeURIComponent(msg);
             fetch(url)
@@ -29,7 +31,7 @@ function sendTelegramMessage() {
             fetch(webhookUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ content: 'ticket purchased' })
+                body: JSON.stringify({ content: webhookMessage })
             });
         }
     });
